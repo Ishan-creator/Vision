@@ -75,7 +75,7 @@ class CNNModel(nn.Module):
         self.act3 = nn.ReLU()
         self.drop3 = nn.Dropout(0.5)
 
-        self.fc4 = nn.Linear(512, 1)  # One output neuron for binary classification
+        self.fc4 = nn.Linear(512, 1) 
         
     def forward(self, x):
         x = self.act1(self.conv1(x))
@@ -89,7 +89,7 @@ class CNNModel(nn.Module):
         return x
 
 model = CNNModel()
-criterion = nn.BCEWithLogitsLoss()  # Binary Cross-Entropy Loss with Logits
+criterion = nn.BCEWithLogitsLoss() 
 optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
 train_loss_history = []
@@ -107,7 +107,7 @@ for epoch in range(num_epochs):
     
     with tqdm(train_dataloader, unit="batch", desc=f"Epoch {epoch+1}/{num_epochs}", colour="GREEN") as tepoch:
         for inputs, labels in tepoch:
-            labels = labels.float().unsqueeze(1)  # Convert labels to float and reshape to match outputs
+            labels = labels.float().unsqueeze(1) 
             optimizer.zero_grad()
             outputs = model(inputs)
             loss = criterion(outputs, labels)
@@ -127,7 +127,7 @@ for epoch in range(num_epochs):
         train_accuracy_history.append(epoch_train_accuracy)
 
     # Validation
-    model.eval()  # Set model to evaluation mode
+    model.eval() 
     val_running_loss = 0.0
     correct = 0
     total = 0
@@ -135,7 +135,7 @@ for epoch in range(num_epochs):
     with torch.no_grad():
         with tqdm(val_dataloader, unit="batch", desc="Validation", colour="RED") as tval:
             for inputs, labels in tval:
-                labels = labels.float().unsqueeze(1)  # Convert labels to float and reshape to match outputs
+                labels = labels.float().unsqueeze(1)  
                 outputs = model(inputs)
                 val_loss = criterion(outputs, labels)
                 val_running_loss += val_loss.item()
@@ -176,7 +176,7 @@ if not os.path.exists(images_folder):
     os.makedirs(images_folder)
 
 
-# Confusion Matrix
+
 cm = confusion_matrix(true_labels, predictions)
 plt.figure(figsize=(6, 6))
 sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", cbar=False)
@@ -185,7 +185,7 @@ plt.ylabel("True Labels")
 plt.title("Confusion Matrix")
 plt.savefig(os.path.join(images_folder, "confusion_matrix.png"))
 
-# Save combined metrics image
+
 plt.figure(figsize=(15, 5))
 plt.subplot(1, 3, 1)
 plt.plot(train_loss_history, label='Training Loss')
